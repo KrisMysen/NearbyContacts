@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NearbyContacts</string>
+    <string name="nearby_persons_activity_name">Nearby persons</string>
 </resources>
