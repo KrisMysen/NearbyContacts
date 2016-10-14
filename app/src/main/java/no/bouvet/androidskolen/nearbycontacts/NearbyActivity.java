@@ -1,17 +1,15 @@
 package no.bouvet.androidskolen.nearbycontacts;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,10 +22,7 @@ import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.google.android.gms.nearby.messages.devices.NearbyDevice;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class NearbyActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NearbyPersonsListFragment.PersonSelectedListener {
+public class NearbyActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PersonSelectedListener {
 
     private final static String TAG = NearbyActivity.class.getSimpleName();
     private final static int REQUEST_RESOLVE_ERROR = 1;
@@ -36,6 +31,10 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
     private PersonDetectedListener personDetectedListener;
     private GoogleApiClient googleApiClient;
     private Message activeMessage;
+
+    public void setPersonDetectedListener(PersonDetectedListener listener) {
+        personDetectedListener = listener;
+    }
 
 
     @Override
@@ -50,20 +49,20 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
 
         addNearbyPersonsListFragmentIfNotExists();
 
+        setPersonDetectedListener(NearbyPersonsListViewModel.INSTANCE);
+
     }
 
     private void addNearbyPersonsListFragmentIfNotExists() {
 
         NearbyPersonsListFragment nearbyPersonsListFragment = (NearbyPersonsListFragment) getFragmentManager().findFragmentById(R.id.nearby_persons_list_fragment);
-        if (nearbyPersonsListFragment == null) {
+        if (nearbyPersonsListFragment == null || !nearbyPersonsListFragment.isInLayout()) {
             nearbyPersonsListFragment = new NearbyPersonsListFragment();
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_holder, nearbyPersonsListFragment);
             fragmentTransaction.commit();
         }
-
-        personDetectedListener = nearbyPersonsListFragment;
     }
 
     private void setupNearbyMessageListener() {
@@ -239,19 +238,15 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
 
         SelectedPersonFragment selectedPersonFragment = (SelectedPersonFragment) getFragmentManager().findFragmentById(R.id.selected_person_fragment);
 
-        if (selectedPersonFragment != null) {
-
-            selectedPersonFragment.showInfoForPerson(person);
-
-        } else {
-
+        if (selectedPersonFragment == null || !selectedPersonFragment.isInLayout()) {
             SelectedPersonFragment newFragment = new SelectedPersonFragment();
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_holder, newFragment);
             fragmentTransaction.addToBackStack(null);
-
             fragmentTransaction.commit();
         }
+
+        SelectPersonViewModel.INSTANCE.setSelectedPerson(person);
 
     }
 }

@@ -12,19 +12,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class NearbyPersonsListFragment extends Fragment implements PersonDetectedListener, AdapterView.OnItemClickListener {
+public class NearbyPersonsListFragment extends Fragment implements AdapterView.OnItemClickListener, ModelUpdateListener {
 
-    private Map<String, Person> detectedPersons = new HashMap<>();
+
     private ListView listView;
     private PersonSelectedListener personSelectedListener;
     private ArrayAdapter<Person> personArrayAdapter;
 
-    public interface PersonSelectedListener {
-        void onPersonSelected(Person person);
+    @Override
+    public void onModelChanged() {
+        updateAdapterModel();
     }
 
     @Nullable
@@ -46,26 +45,31 @@ public class NearbyPersonsListFragment extends Fragment implements PersonDetecte
         super.onAttach(context);
 
         try {
-            personSelectedListener = (PersonSelectedListener) context;
+            PersonSelectedListener listener = (PersonSelectedListener) context;
+            personSelectedListener = listener;
+
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "must implement PersonSelectedListener");
         }
     }
 
     @Override
-    public void onPersonDetected(Person person) {
-        detectedPersons.put(person.getName(), person);
+    public void onResume() {
+        super.onResume();
+
+        NearbyPersonsListViewModel.INSTANCE.setModelUpdateListener(this);
         updateAdapterModel();
     }
 
     @Override
-    public void onPersonLost(Person person) {
-        detectedPersons.remove(person.getName());
-        updateAdapterModel();
+    public void onPause() {
+        super.onPause();
+
+        NearbyPersonsListViewModel.INSTANCE.removeModelUpdateListener(this);
     }
 
     private void updateAdapterModel() {
-        List<Person> personList = new ArrayList<>(detectedPersons.values());
+        List<Person> personList = NearbyPersonsListViewModel.INSTANCE.getNearbyPersons();
 
         if (personArrayAdapter != null) {
             personArrayAdapter.clear();
