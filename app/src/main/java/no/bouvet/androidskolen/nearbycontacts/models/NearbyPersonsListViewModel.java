@@ -1,11 +1,13 @@
-package no.bouvet.androidskolen.nearbycontacts;
+package no.bouvet.androidskolen.nearbycontacts.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum NearbyPersonsListViewModel implements PersonDetectedListener{
+import no.bouvet.androidskolen.nearbycontacts.PersonDetectedListener;
+
+public enum NearbyPersonsListViewModel implements PersonDetectedListener {
 
     INSTANCE;
 

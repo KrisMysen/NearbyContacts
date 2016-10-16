@@ -21,6 +21,11 @@ import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.google.android.gms.nearby.messages.devices.NearbyDevice;
 
+import no.bouvet.androidskolen.nearbycontacts.models.NearbyPersonsListViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.OwnPersonViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Person;
+import no.bouvet.androidskolen.nearbycontacts.models.SelectedPersonViewModel;
+
 public class NearbyActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PersonSelectedListener {
 
     private final static String TAG = NearbyActivity.class.getSimpleName();

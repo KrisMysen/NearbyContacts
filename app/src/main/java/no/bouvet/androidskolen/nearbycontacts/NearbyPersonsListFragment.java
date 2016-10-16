@@ -14,6 +14,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.bouvet.androidskolen.nearbycontacts.models.ModelUpdateListener;
+import no.bouvet.androidskolen.nearbycontacts.models.NearbyPersonsListViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Person;
+
 public class NearbyPersonsListFragment extends Fragment implements AdapterView.OnItemClickListener, ModelUpdateListener {
 
 

@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import no.bouvet.androidskolen.nearbycontacts.models.ModelUpdateListener;
+import no.bouvet.androidskolen.nearbycontacts.models.OwnPersonViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Person;
+import no.bouvet.androidskolen.nearbycontacts.models.SelectedPersonViewModel;
+
 public class SelectedPersonFragment extends Fragment implements ModelUpdateListener, View.OnClickListener {
 
 

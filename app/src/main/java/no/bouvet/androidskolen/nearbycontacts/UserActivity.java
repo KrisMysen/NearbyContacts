@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import no.bouvet.androidskolen.nearbycontacts.models.OwnPersonViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Person;
+
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText userNameEditText;

@@ -1,4 +1,4 @@
-package no.bouvet.androidskolen.nearbycontacts;
+package no.bouvet.androidskolen.nearbycontacts.models;
 
 public interface ModelUpdateListener {
 
