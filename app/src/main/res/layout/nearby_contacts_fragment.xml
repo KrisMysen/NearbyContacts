@@ -7,7 +7,7 @@
               android:background="@color/colorPrimary">
 
     <ListView
-        android:id="@+id/nearby_persons_listView"
+        android:id="@+id/nearby_contacts_listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import no.bouvet.androidskolen.nearbycontacts.models.OwnPersonViewModel;
-import no.bouvet.androidskolen.nearbycontacts.models.Person;
+import no.bouvet.androidskolen.nearbycontacts.models.OwnContactViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Contact;
 
-public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+public class OwnContactActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText userNameEditText;
 
@@ -31,23 +31,23 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
 
-        Person person = OwnPersonViewModel.INSTANCE.getPerson();
-        if (person != null) {
-            userNameEditText.setText(person.getName());
+        Contact contact = OwnContactViewModel.INSTANCE.getContact();
+        if (contact != null) {
+            userNameEditText.setText(contact.getName());
         }
     }
 
     @Override
     public void onClick(View view) {
-        Person person = createPersonFromInput();
-        OwnPersonViewModel.INSTANCE.setPerson(person);
+        Contact contact = createContactFromInput();
+        OwnContactViewModel.INSTANCE.setContact(contact);
 
         Intent intent = new Intent(this, NearbyActivity.class);
         startActivity(intent);
     }
 
-    private Person createPersonFromInput() {
+    private Contact createContactFromInput() {
         String name = userNameEditText.getText().toString();
-        return new Person(name);
+        return new Contact(name);
     }
 }

@@ -15,26 +15,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import no.bouvet.androidskolen.nearbycontacts.models.ModelUpdateListener;
-import no.bouvet.androidskolen.nearbycontacts.models.OwnPersonViewModel;
-import no.bouvet.androidskolen.nearbycontacts.models.Person;
-import no.bouvet.androidskolen.nearbycontacts.models.SelectedPersonViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.OwnContactViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Contact;
+import no.bouvet.androidskolen.nearbycontacts.models.SelectedContactViewModel;
 
-public class SelectedPersonFragment extends Fragment implements ModelUpdateListener, View.OnClickListener {
+public class SelectedContactFragment extends Fragment implements ModelUpdateListener, View.OnClickListener {
 
 
-    private static final String TAG = SelectedPersonFragment.class.getSimpleName();
-    private TextView personNameTextView;
+    private static final String TAG = SelectedContactFragment.class.getSimpleName();
+    private TextView contactNameTextView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.selected_person_fragment, container, false);
+        View view = inflater.inflate(R.layout.selected_contact_fragment, container, false);
 
         Button saveActivityButton = (Button) view.findViewById(R.id.save_to_contacts_button);
         saveActivityButton.setOnClickListener(this);
 
-        personNameTextView = (TextView) view.findViewById(R.id.person_name_textView);
+        contactNameTextView = (TextView) view.findViewById(R.id.contact_name_textView);
 
         return view;
     }
@@ -44,21 +44,21 @@ public class SelectedPersonFragment extends Fragment implements ModelUpdateListe
     public void onResume() {
         super.onResume();
 
-        SelectedPersonViewModel.INSTANCE.setModelUpdateListener(this);
-        updateGui(SelectedPersonViewModel.INSTANCE.getPerson());
+        SelectedContactViewModel.INSTANCE.setModelUpdateListener(this);
+        updateGui(SelectedContactViewModel.INSTANCE.getContact());
     }
 
     @Override
     public void onModelChanged() {
-        updateGui(SelectedPersonViewModel.INSTANCE.getPerson());
+        updateGui(SelectedContactViewModel.INSTANCE.getContact());
     }
 
 
-    private void updateGui(Person person) {
+    private void updateGui(Contact contact) {
 
-        Log.d(TAG, "Person selected: " + person.getName());
+        Log.d(TAG, "Contact selected: " + contact.getName());
 
-        personNameTextView.setText(person.getName());
+        contactNameTextView.setText(contact.getName());
     }
 
     @Override
@@ -66,9 +66,9 @@ public class SelectedPersonFragment extends Fragment implements ModelUpdateListe
         Intent contactIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
         contactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
 
-        Person person = OwnPersonViewModel.INSTANCE.getPerson();
+        Contact contact = OwnContactViewModel.INSTANCE.getContact();
 
-        String name = person.getName();
+        String name = contact.getName();
         contactIntent.putExtra(ContactsContract.Intents.Insert.NAME, name);
 
         startActivityForResult(contactIntent, 1);

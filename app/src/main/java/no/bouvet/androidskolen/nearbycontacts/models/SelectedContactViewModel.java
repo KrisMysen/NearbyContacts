@@ -1,14 +1,14 @@
 package no.bouvet.androidskolen.nearbycontacts.models;
 
-public enum SelectedPersonViewModel {
+public enum SelectedContactViewModel {
 
     INSTANCE;
 
-    private Person selectedPerson;
+    private Contact selectedContact;
     private ModelUpdateListener modelUpdateListener;
 
-    SelectedPersonViewModel() {
-        selectedPerson = new Person("None selected");
+    SelectedContactViewModel() {
+        selectedContact = new Contact("None selected");
     }
 
     public void setModelUpdateListener(ModelUpdateListener listener) {
@@ -21,13 +21,13 @@ public enum SelectedPersonViewModel {
         }
     }
 
-    public void setSelectedPerson(Person person) {
-        selectedPerson = person;
+    public void setSelectedContact(Contact contact) {
+        selectedContact = contact;
         fireModelUpdated();
     }
 
-    public Person getPerson() {
-        return selectedPerson;
+    public Contact getContact() {
+        return selectedContact;
     }
 
 

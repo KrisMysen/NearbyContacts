@@ -15,7 +15,7 @@
 
         <activity
             android:label="@string/app_name"
-            android:name=".UserActivity">
+            android:name=".OwnContactActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -24,9 +24,9 @@
         </activity>
 
         <activity
-            android:parentActivityName=".UserActivity"
+            android:parentActivityName=".OwnContactActivity"
             android:name=".NearbyActivity"
-            android:label="@string/nearby_persons_activity_name">
+            android:label="@string/nearby_contacts_activity_name">
         </activity>
     </application>
 

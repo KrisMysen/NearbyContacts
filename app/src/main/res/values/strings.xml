@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">NearbyContacts</string>
-    <string name="nearby_persons_activity_name">Nearby persons</string>
-    <string name="user_name_hint">user name</string>
+    <string name="app_name">Nearby Contacts</string>
+    <string name="nearby_contacts_activity_name">Nearby Contacts</string>
+    <string name="user_name_hint">name</string>
     <string name="save_contact_button">Save</string>
+    <string name="publish_own_user_button">Publish</string>
 </resources>

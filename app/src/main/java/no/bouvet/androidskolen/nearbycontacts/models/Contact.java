@@ -2,13 +2,13 @@ package no.bouvet.androidskolen.nearbycontacts.models;
 
 import com.google.gson.Gson;
 
-public class Person {
+public class Contact {
 
     private static final Gson gson = new Gson();
 
     private final String name;
 
-    public Person(String name) {
+    public Contact(String name) {
         this.name = name;
     }
 
@@ -25,7 +25,7 @@ public class Person {
         return gson.toJson(this);
     }
 
-    public static Person fromJson(String json) {
-        return gson.fromJson(json, Person.class);
+    public static Contact fromJson(String json) {
+        return gson.fromJson(json, Contact.class);
     }
 }

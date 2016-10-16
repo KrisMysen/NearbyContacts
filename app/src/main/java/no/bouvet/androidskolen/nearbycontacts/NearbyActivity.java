@@ -21,23 +21,23 @@ import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.google.android.gms.nearby.messages.devices.NearbyDevice;
 
-import no.bouvet.androidskolen.nearbycontacts.models.NearbyPersonsListViewModel;
-import no.bouvet.androidskolen.nearbycontacts.models.OwnPersonViewModel;
-import no.bouvet.androidskolen.nearbycontacts.models.Person;
-import no.bouvet.androidskolen.nearbycontacts.models.SelectedPersonViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.NearbyContactsListViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.OwnContactViewModel;
+import no.bouvet.androidskolen.nearbycontacts.models.Contact;
+import no.bouvet.androidskolen.nearbycontacts.models.SelectedContactViewModel;
 
-public class NearbyActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PersonSelectedListener {
+public class NearbyActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ContactSelectedListener {
 
     private final static String TAG = NearbyActivity.class.getSimpleName();
     private final static int REQUEST_RESOLVE_ERROR = 1;
 
     private MessageListener messageListener;
-    private PersonDetectedListener personDetectedListener;
+    private ContactDetectedListener contactDetectedListener;
     private GoogleApiClient googleApiClient;
     private Message activeMessage;
 
-    public void setPersonDetectedListener(PersonDetectedListener listener) {
-        personDetectedListener = listener;
+    public void setContactDetectedListener(ContactDetectedListener listener) {
+        contactDetectedListener = listener;
     }
 
 
@@ -51,20 +51,20 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
 
         setupNearbyMessagesApi();
 
-        addNearbyPersonsListFragmentIfNotExists();
+        addNearbyContactsFragmentIfNotExists();
 
-        setPersonDetectedListener(NearbyPersonsListViewModel.INSTANCE);
+        setContactDetectedListener(NearbyContactsListViewModel.INSTANCE);
 
     }
 
-    private void addNearbyPersonsListFragmentIfNotExists() {
+    private void addNearbyContactsFragmentIfNotExists() {
 
-        NearbyPersonsListFragment nearbyPersonsListFragment = (NearbyPersonsListFragment) getFragmentManager().findFragmentById(R.id.nearby_persons_list_fragment);
-        if (nearbyPersonsListFragment == null || !nearbyPersonsListFragment.isInLayout()) {
-            nearbyPersonsListFragment = new NearbyPersonsListFragment();
+        NearbyContactsFragment nearbyContactsFragment = (NearbyContactsFragment) getFragmentManager().findFragmentById(R.id.nearby_contacts_list_fragment);
+        if (nearbyContactsFragment == null || !nearbyContactsFragment.isInLayout()) {
+            nearbyContactsFragment = new NearbyContactsFragment();
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_holder, nearbyPersonsListFragment);
+            fragmentTransaction.replace(R.id.fragment_holder, nearbyContactsFragment);
             fragmentTransaction.commit();
         }
     }
@@ -83,8 +83,8 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
                 String messageAsJson = new String(message.getContent());
                 Log.d(TAG, "Found message: " + messageAsJson);
 
-                Person person = Person.fromJson(messageAsJson);
-                firePersonDetected(person);
+                Contact contact = Contact.fromJson(messageAsJson);
+                fireContactDetected(contact);
             }
 
             @Override
@@ -103,8 +103,8 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
                 String messageAsJson = new String(message.getContent());
                 Log.d(TAG, "Lost sight of message: " + messageAsJson);
 
-                Person person = Person.fromJson(messageAsJson);
-                firePersonLost(person);
+                Contact contact = Contact.fromJson(messageAsJson);
+                fireContactLost(contact);
             }
         };
     }
@@ -138,10 +138,10 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    private void publish(Person person) {
+    private void publish(Contact contact) {
 
-        Log.i(TAG, "[publish] Publishing information about person: " + person.getName());
-        String json = person.toJson();
+        Log.i(TAG, "[publish] Publishing information about contact: " + contact.getName());
+        String json = contact.toJson();
         activeMessage = new Message(json.getBytes());
         com.google.android.gms.nearby.Nearby.Messages.publish(googleApiClient, activeMessage);
     }
@@ -179,10 +179,10 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-    private void publishPersonInternally() {
-        Log.d(TAG, "[publishPersonInternally]");
+    private void publishContactInternally() {
+        Log.d(TAG, "[publishContactInternally]");
         if (googleApiClient.isConnected()) {
-            publish(OwnPersonViewModel.INSTANCE.getPerson());
+            publish(OwnContactViewModel.INSTANCE.getContact());
             subscribe();
         }
     }
@@ -190,7 +190,7 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "[onConnected]");
-        publishPersonInternally();
+        publishContactInternally();
     }
 
     @Override
@@ -224,33 +224,33 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    private void firePersonDetected(Person person) {
-        if (personDetectedListener != null) {
-            personDetectedListener.onPersonDetected(person);
+    private void fireContactDetected(Contact contact) {
+        if (contactDetectedListener != null) {
+            contactDetectedListener.onContactDetected(contact);
         }
     }
 
-    private void firePersonLost(Person person) {
-        if (personDetectedListener != null) {
-            personDetectedListener.onPersonLost(person);
+    private void fireContactLost(Contact contact) {
+        if (contactDetectedListener != null) {
+            contactDetectedListener.onContactLost(contact);
         }
     }
 
     @Override
-    public void onPersonSelected(Person person) {
-        Log.d(TAG, "Person selected: " + person.getName());
+    public void onContactSelected(Contact contact) {
+        Log.d(TAG, "Contact selected: " + contact.getName());
 
-        SelectedPersonFragment selectedPersonFragment = (SelectedPersonFragment) getFragmentManager().findFragmentById(R.id.selected_person_fragment);
+        SelectedContactFragment selectedContactFragment = (SelectedContactFragment) getFragmentManager().findFragmentById(R.id.selected_contact_fragment);
 
-        if (selectedPersonFragment == null || !selectedPersonFragment.isInLayout()) {
-            SelectedPersonFragment newFragment = new SelectedPersonFragment();
+        if (selectedContactFragment == null || !selectedContactFragment.isInLayout()) {
+            SelectedContactFragment newFragment = new SelectedContactFragment();
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_holder, newFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
-        SelectedPersonViewModel.INSTANCE.setSelectedPerson(person);
+        SelectedContactViewModel.INSTANCE.setSelectedContact(contact);
 
     }
 }

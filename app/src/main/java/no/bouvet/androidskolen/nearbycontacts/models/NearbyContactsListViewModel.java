@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.bouvet.androidskolen.nearbycontacts.PersonDetectedListener;
+import no.bouvet.androidskolen.nearbycontacts.ContactDetectedListener;
 
-public enum NearbyPersonsListViewModel implements PersonDetectedListener {
+public enum NearbyContactsListViewModel implements ContactDetectedListener {
 
     INSTANCE;
 
-    private Map<String, Person> detectedPersons = new HashMap<>();
+    private Map<String, Contact> detectedContacts = new HashMap<>();
     private ModelUpdateListener modelUpdateListener;
 
     public void setModelUpdateListener(ModelUpdateListener listener) {
@@ -24,18 +24,18 @@ public enum NearbyPersonsListViewModel implements PersonDetectedListener {
         }
     }
 
-    public void onPersonDetected(Person person) {
-        detectedPersons.put(person.getName(), person);
+    public void onContactDetected(Contact contact) {
+        detectedContacts.put(contact.getName(), contact);
         fireModelUpdated();
     }
 
-    public void onPersonLost(Person person) {
-        detectedPersons.remove(person.getName());
+    public void onContactLost(Contact contact) {
+        detectedContacts.remove(contact.getName());
         fireModelUpdated();
     }
 
-    public List<Person> getNearbyPersons() {
-        return new ArrayList<>(detectedPersons.values());
+    public List<Contact> getNearbyContacts() {
+        return new ArrayList<>(detectedContacts.values());
     }
 
     private void fireModelUpdated() {
