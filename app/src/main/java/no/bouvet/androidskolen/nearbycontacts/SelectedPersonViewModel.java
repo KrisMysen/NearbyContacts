@@ -1,11 +1,15 @@
 package no.bouvet.androidskolen.nearbycontacts;
 
-public enum SelectPersonViewModel {
+public enum SelectedPersonViewModel {
 
     INSTANCE;
 
     private Person selectedPerson;
     private ModelUpdateListener modelUpdateListener;
+
+    SelectedPersonViewModel() {
+        selectedPerson = new Person("None selected");
+    }
 
     public void setModelUpdateListener(ModelUpdateListener listener) {
         modelUpdateListener = listener;

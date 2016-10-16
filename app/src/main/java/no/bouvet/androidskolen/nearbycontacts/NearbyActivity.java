@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -178,7 +177,7 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
     private void publishPersonInternally() {
         Log.d(TAG, "[publishPersonInternally]");
         if (googleApiClient.isConnected()) {
-            publish(new Person(Build.DEVICE + "::"+ Build.MODEL));
+            publish(OwnPersonViewModel.INSTANCE.getPerson());
             subscribe();
         }
     }
@@ -246,7 +245,7 @@ public class NearbyActivity extends AppCompatActivity implements GoogleApiClient
             fragmentTransaction.commit();
         }
 
-        SelectPersonViewModel.INSTANCE.setSelectedPerson(person);
+        SelectedPersonViewModel.INSTANCE.setSelectedPerson(person);
 
     }
 }

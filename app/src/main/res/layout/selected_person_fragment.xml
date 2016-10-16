@@ -3,24 +3,22 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+              android:padding="@dimen/fragment_padding"
+              android:background="@color/colorPrimaryDark">
 
 
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"/>
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"/>
+        android:id="@+id/person_name_textView"/>
 
     <Button
-        android:text="Button"
-        android:layout_width="match_parent"
+        android:text="@string/save_contact_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"/>
+        android:layout_marginTop="20dp"
+        android:id="@+id/save_to_contacts_button"/>
+
+
 </LinearLayout>
